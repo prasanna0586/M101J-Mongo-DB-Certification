@@ -35,6 +35,13 @@ public class FindApp {
         List collectionFilterList = (List) mongoCollection.find(filter).into(new ArrayList<Document>());
         System.out.println(collectionFilterList);
         System.out.println("****************Into filter ends*****************");
+        System.out.println("****************Projection starts*****************");
+        Bson projectionExclude = new Document("age", 0).append("_id", 0);
+        //Bson projectionInclude = new Document("age", 1).append("_id", 0);//Include age but exclude _id
+        //Bson projectionMethod = Projections.fields(Projections.include("age"), Projections.exclude("_id")); //Same behavior as above
+        List projectionList = (List) mongoCollection.find(filter).projection(projectionExclude).into(new ArrayList<Document>());
+        System.out.println(projectionList);
+        System.out.println("****************Projection starts*****************");
         System.out.println("****************Cursor starts*****************");
         MongoCursor mongoCursor = mongoCollection.find().iterator();
         try {
