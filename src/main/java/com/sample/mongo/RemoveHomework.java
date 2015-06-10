@@ -1,5 +1,6 @@
 package com.sample.mongo;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -34,8 +35,17 @@ public class RemoveHomework {
                     }
                 }
             }
-
-            System.out.println("Student ID " + document.get("_id") + " -> " + documentToRemove);
+            //System.out.println("Student ID " + document.get("_id") + " -> " + documentToRemove);
+            //mongoCollection.deleteOne(Filters.eq("score", documentToRemove.getDouble("score")));
+            //mongoCollection.de
+            //Bson deleteFilter = Filters.eq("_id", document.get("_id"));
+            BasicDBObject match = new BasicDBObject("_id", document.get("_id")); //to match your direct app document
+            BasicDBObject update = new BasicDBObject("scores", documentToRemove);
+            mongoCollection.updateOne(match, new BasicDBObject("$pull", update));
+        }
+        List<Document> newList = (List<Document>) mongoCollection.find().into(new ArrayList<Document>());
+        for(Document list : newList) {
+            System.out.println(list);
         }
     }
 }
